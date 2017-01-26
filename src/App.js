@@ -7,11 +7,13 @@ import './App.css';
 
 const DEFAULT_QUERY = 'redux';
 const DEFAULT_PAGE = 0;
+const DEFAULT_HPP = '100';
 
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
 const PARAM_PAGE = 'page=';
+const PARAM_HPP = 'hitsPerPage=';
 
 //var url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}&${PARAM_PAGE}${DEFAULT_PAGE}`;
 
@@ -22,6 +24,7 @@ class App extends Component {
         this.state = {
             result: null,
             searchTerm: DEFAULT_QUERY,
+            totalPages: null,
         };
 
         this.setSearchTopStories = this.setSearchTopStories.bind(this);
@@ -53,12 +56,25 @@ class App extends Component {
     }
 
     setSearchTopStories(result) {
-        console.log(result);
-        this.setState({result});
+        const {hits, page, nbPages} = result;
+
+        const oldHits = page !== 0
+            ? this.state.result.hits
+            : [];
+
+        const updatedHits = [
+            ...oldHits,
+            ...hits
+        ];
+
+        this.setState({
+            result: {hits: updatedHits, page},
+            totalPages: nbPages,
+        });
     }
 
     fetchSearchTopStories(searchTerm, page) {
-        fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
+        fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
             .then(response => response.json())
             .then(result => this.setSearchTopStories(result));
     }
@@ -69,8 +85,10 @@ class App extends Component {
     }
 
     render() {
-        const {result, searchTerm} = this.state;
+        const {result, searchTerm, totalPages} = this.state;
         const currentPage = (result && result.page) || 0;
+        console.log(result);
+        const modifier = totalPages ? currentPage + 1 === totalPages ? 0 : 1 : 0;
 
         return (
             <div className="page">
@@ -90,7 +108,7 @@ class App extends Component {
                     />
                 }
                 <div className="interactions">
-                    <Button onClick={() => this.fetchSearchTopStories(searchTerm, currentPage + 1)}>
+                    <Button onClick={() => this.fetchSearchTopStories(searchTerm, currentPage + modifier)}>
                         More
                     </Button>
                 </div>
