@@ -1,36 +1,19 @@
 import React, {Component} from 'react';
 import Search from './Search';
 import Table from './Table';
+import Button from './Button';
 import './App.css';
 
-const list = [
-    {
-        title: 'React',
-        url: 'https://facebook.github.io/react/',
-        author: 'Jordan Walke',
-        num_comments: 3,
-        points: 4,
-        objectID: 0,
-    }, {
-        title: 'Redux',
-        url: 'https://github.com/reactjs/redux',
-        author: 'Dan Abramov, Andrew Clark',
-        num_comments: 22,
-        points: 5,
-        objectID: 1,
-    },
-];
 
-const DEFAULT_QUERY =  'redux';
+const DEFAULT_QUERY = 'redux';
+const DEFAULT_PAGE = 0;
 
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
+const PARAM_PAGE = 'page=';
 
-var url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
-
-console.log(url);
-
+//var url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}&${PARAM_PAGE}${DEFAULT_PAGE}`;
 
 class App extends Component {
     constructor(props) {
@@ -41,18 +24,19 @@ class App extends Component {
             searchTerm: DEFAULT_QUERY,
         };
 
-        this.setSearchTopstories = this.setSearchTopstories.bind(this);
-        this.fetchSearchTopstories = this.fetchSearchTopstories.bind(this);
+        this.setSearchTopStories = this.setSearchTopStories.bind(this);
+        this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
         this.onDismiss = this.onDismiss.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
+        this.onSearchSubmit = this.onSearchSubmit.bind(this);
     }
 
     onDismiss(id) {
         const isNotId = item => item.objectID !== id;
-        const updatedList = this.state.list.filter(isNotId);
+        const updatedList = this.state.result.hits.filter(isNotId);
 
         this.setState({
-            list: updatedList,
+            result: {...this.state.result, hits: updatedList},
         });
     }
 
@@ -62,22 +46,31 @@ class App extends Component {
         });
     }
 
-    setSearchTopstories(result){
-        this.setState(result);
+    onSearchSubmit(event) {
+        const {searchTerm} = this.state;
+        this.fetchSearchTopStories(searchTerm, DEFAULT_PAGE);
+        event.preventDefault();
     }
 
-    fetchSearchTopstories(searchTerm) {
-        fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+    setSearchTopStories(result) {
+        console.log(result);
+        this.setState({result});
+    }
+
+    fetchSearchTopStories(searchTerm, page) {
+        fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
             .then(response => response.json())
-            .then(result => this.setSearchTopstories(result));
+            .then(result => this.setSearchTopStories(result));
     }
 
     componentDidMount() {
-        const { searchTerm }  = this.state;
-        this.fetchSearchTopstories(searchTerm);
+        const {searchTerm}  = this.state;
+        this.fetchSearchTopStories(searchTerm, DEFAULT_PAGE);
     }
+
     render() {
-        const {list, searchTerm} = this.state;
+        const {result, searchTerm} = this.state;
+        const currentPage = (result && result.page) || 0;
 
         return (
             <div className="page">
@@ -85,15 +78,22 @@ class App extends Component {
                     <Search
                         value={searchTerm}
                         onChange={this.onSearchChange}
+                        onSubmit={this.onSearchSubmit}
                     >
                         Search
                     </Search>
                 </div>
-                <Table
-                    list={list}
-                    pattern={searchTerm}
-                    onDismiss={this.onDismiss}
-                />
+                {
+                    result && <Table
+                        list={result.hits}
+                        onDismiss={this.onDismiss}
+                    />
+                }
+                <div className="interactions">
+                    <Button onClick={() => this.fetchSearchTopStories(searchTerm, currentPage + 1)}>
+                        More
+                    </Button>
+                </div>
             </div>
         );
     }
