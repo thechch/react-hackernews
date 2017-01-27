@@ -22,7 +22,8 @@ class App extends Component {
         super(props);
 
         this.state = {
-            result: null,
+            results: null,
+            searchKey: '',
             searchTerm: DEFAULT_QUERY,
             totalPages: null,
         };
@@ -51,15 +52,17 @@ class App extends Component {
 
     onSearchSubmit(event) {
         const {searchTerm} = this.state;
+        this.setState({ searchKey: searchTerm });
         this.fetchSearchTopStories(searchTerm, DEFAULT_PAGE);
         event.preventDefault();
     }
 
     setSearchTopStories(result) {
         const {hits, page, nbPages} = result;
+        const {searchKey, results} = this.state;
 
-        const oldHits = page !== 0
-            ? this.state.result.hits
+        const oldHits = results && results[searchKey]
+            ? results[searchKey].hits
             : [];
 
         const updatedHits = [
@@ -68,7 +71,8 @@ class App extends Component {
         ];
 
         this.setState({
-            result: {hits: updatedHits, page},
+            ...results,
+            [searchKey]: {hits: updatedHits, page},
             totalPages: nbPages,
         });
     }
@@ -81,6 +85,7 @@ class App extends Component {
 
     componentDidMount() {
         const {searchTerm}  = this.state;
+        this.setState( {searchKey: searchTerm});
         this.fetchSearchTopStories(searchTerm, DEFAULT_PAGE);
     }
 
