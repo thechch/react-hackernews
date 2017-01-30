@@ -73,7 +73,6 @@ class App extends Component {
     setSearchTopStories(result) {
         const {hits, page, nbPages} = result;
         const {searchKey, results} = this.state;
-        console.log(result);
 
         const oldHits = results && results[searchKey]
             ? results[searchKey].hits
@@ -118,8 +117,6 @@ class App extends Component {
 
         const modifier = totalPages ? page + 1 === totalPages ? 0 : 1 : 0;
 
-        console.log(this.state);
-
         return (
             <div className="page">
                 <div className="interactions">
@@ -146,3 +143,9 @@ class App extends Component {
 }
 
 export default App;
+
+export {
+    Button,
+    Search,
+    Table
+};
