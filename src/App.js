@@ -28,6 +28,7 @@ class App extends Component {
             totalPages: null,
         };
 
+        this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
         this.setSearchTopStories = this.setSearchTopStories.bind(this);
         this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
         this.onDismiss = this.onDismiss.bind(this);
@@ -35,12 +36,22 @@ class App extends Component {
         this.onSearchSubmit = this.onSearchSubmit.bind(this);
     }
 
+    needsToSearchTopStories(searchTerm) {
+        return !this.state.results[searchTerm];
+    }
+
     onDismiss(id) {
+        const { searchKey, results} = this.state;
+        const { hits, page} = results[searchKey];
+
         const isNotId = item => item.objectID !== id;
-        const updatedList = this.state.result.hits.filter(isNotId);
+        const updatedHits = hits.filter(isNotId);
 
         this.setState({
-            result: {...this.state.result, hits: updatedList},
+            results: {
+                ...results,
+                [searchKey]: {hits: updatedHits, page}
+            }
         });
     }
 
@@ -53,13 +64,16 @@ class App extends Component {
     onSearchSubmit(event) {
         const {searchTerm} = this.state;
         this.setState({ searchKey: searchTerm });
-        this.fetchSearchTopStories(searchTerm, DEFAULT_PAGE);
+        if(this.needsToSearchTopStories(searchTerm)){
+            this.fetchSearchTopStories(searchTerm, DEFAULT_PAGE);
+        }
         event.preventDefault();
     }
 
     setSearchTopStories(result) {
         const {hits, page, nbPages} = result;
         const {searchKey, results} = this.state;
+        console.log(result);
 
         const oldHits = results && results[searchKey]
             ? results[searchKey].hits
@@ -71,8 +85,10 @@ class App extends Component {
         ];
 
         this.setState({
-            ...results,
-            [searchKey]: {hits: updatedHits, page},
+            results: {
+                ...results,
+                [searchKey]: {hits: updatedHits, page},
+            },
             totalPages: nbPages,
         });
     }
@@ -90,10 +106,19 @@ class App extends Component {
     }
 
     render() {
-        const {result, searchTerm, totalPages} = this.state;
-        const currentPage = (result && result.page) || 0;
-        console.log(result);
-        const modifier = totalPages ? currentPage + 1 === totalPages ? 0 : 1 : 0;
+        const {
+            results,
+            searchTerm,
+            searchKey,
+            totalPages,
+        } = this.state;
+
+        const page = (results && results[searchKey] && results[searchKey].page) || 0;
+        const list = (results && results[searchKey] && results[searchKey].hits) || [];
+
+        const modifier = totalPages ? page + 1 === totalPages ? 0 : 1 : 0;
+
+        console.log(this.state);
 
         return (
             <div className="page">
@@ -106,14 +131,12 @@ class App extends Component {
                         Search
                     </Search>
                 </div>
-                {
-                    result && <Table
-                        list={result.hits}
+                <Table
+                        list={list}
                         onDismiss={this.onDismiss}
-                    />
-                }
+                />
                 <div className="interactions">
-                    <Button onClick={() => this.fetchSearchTopStories(searchTerm, currentPage + modifier)}>
+                    <Button onClick={() => this.fetchSearchTopStories(searchKey, page + modifier)}>
                         More
                     </Button>
                 </div>
