@@ -14,7 +14,7 @@ describe('App', () => {
         const component = renderer.create(<App />);
         let tree = component.toJSON();
         expect(tree).toMatchSnapshot();
-    })
+    });
 });
 
 describe('Search', () => {

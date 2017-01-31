@@ -1,7 +1,11 @@
 {
   "extends": "airbnb",
   "globals": {
-    "fetch": true
+    "fetch": true,
+    "document": true
+  },
+  "env": {
+    "jest": true
   },
   "rules": {
     "indent": [
