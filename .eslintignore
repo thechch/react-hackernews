@@ -1,0 +1,4 @@
+.public/*
+.scripts/*
+dist/*
+node_modules/*
