@@ -134,7 +134,7 @@ class App extends Component {
                 />
                 <div className="interactions">
                     <Button onClick={() => this.fetchSearchTopStories(searchKey, page + modifier)}>
-                        More
+                        Give me more
                     </Button>
                 </div>
             </div>
