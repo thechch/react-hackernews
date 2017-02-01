@@ -4,7 +4,6 @@ import Table from '../Table/Table';
 import Button from '../Button/Button';
 import './App.css';
 
-
 const DEFAULT_QUERY = 'redux';
 const DEFAULT_PAGE = 0;
 const DEFAULT_HPP = '100';
