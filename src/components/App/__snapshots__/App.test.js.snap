@@ -21,12 +21,15 @@ exports[`App snapshots 1`] = `
     className="table" />
   <div
     className="interactions">
-    <button
-      className=""
-      onClick={[Function]}
-      type="button">
-      Give me more
-    </button>
+    <div
+      className="spinner">
+      <div
+        className="bounce1" />
+      <div
+        className="bounce2" />
+      <div
+        className="bounce3" />
+    </div>
   </div>
 </div>
 `;

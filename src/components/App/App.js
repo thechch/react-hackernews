@@ -127,16 +127,18 @@ class App extends Component {
               list={list}
               onDismiss={this.onDismiss}
             />
-              <div className="interactions">
-                  {
-                      isLoading
-                          ? <Loading/>
-                          : <Button onClick={() => this.fetchSearchTopStories(searchKey, page + modifier)}>
-                              Give me more
-                          </Button>
+            <div className="interactions">
+              {
+                  isLoading
+                      ? <Loading />
+                      : <Button
+                        onClick={() => this.fetchSearchTopStories(searchKey, page + modifier)}
+                      >
+                          Give me more
+                      </Button>
                   }
-              </div>
-          </div>
+            </div>
+          </div>пше
         );
     }
 }
