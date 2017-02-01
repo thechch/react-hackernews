@@ -1,0 +1,8 @@
+exports[`Button snapshot 1`] = `
+<button
+  className=""
+  onClick={[Function]}
+  type="button">
+  Give me more
+</button>
+`;
