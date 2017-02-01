@@ -64,7 +64,6 @@ class App extends Component {
         }
         event.preventDefault();
     }
-
     setSearchTopStories(result) {
         const { hits, page, nbPages } = result;
         const { searchKey, results } = this.state;
@@ -86,19 +85,15 @@ class App extends Component {
             totalPages: nbPages,
         });
     }
-
     needsToSearchTopStories(searchTerm) {
         return !this.state.results[searchTerm];
     }
-
     fetchSearchTopStories(searchTerm, page) {
         this.setState({ searchKey: searchTerm });
         fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
             .then(response => response.json())
             .then(result => this.setSearchTopStories(result));
     }
-
-
     render() {
         const {
             results,
@@ -106,14 +101,11 @@ class App extends Component {
             searchKey,
             totalPages,
         } = this.state;
-
         const page = (results && results[searchKey] && results[searchKey].page) || 0;
         const list = (results && results[searchKey] && results[searchKey].hits) || [];
-
         const modifier = totalPages && page + 1 !== totalPages
             ? 1
             : 0;
-
         return (
           <div className="page">
             <div className="interactions">
@@ -132,7 +124,7 @@ class App extends Component {
             <div className="interactions">
               <Button onClick={() => this.fetchSearchTopStories(searchKey, page + modifier)}>
                         Give me more
-                    </Button>
+              </Button>
             </div>
           </div>
         );

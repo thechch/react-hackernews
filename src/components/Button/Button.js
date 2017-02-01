@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Button = ({ onClick, className = '', children }) =>
+const Button = ({ onClick, className, children }) =>
   <button
     onClick={onClick}
     className={className}
@@ -11,5 +11,11 @@ const Button = ({ onClick, className = '', children }) =>
 
 export default Button;
 Button.propTypes = {
-    children: React.PropTypes.element.isRequired,
+    onClick: React.PropTypes.func.isRequired,
+    className: React.PropTypes.string,
+    children: React.PropTypes.string,
+};
+Button.defaultProps = {
+    className: '',
+    children: '',
 };
