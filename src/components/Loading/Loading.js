@@ -7,5 +7,10 @@ const Loading = ({ className }) =>
     <div className="bounce2" />
     <div className="bounce3" />
   </div>;
-
+Loading.propTypes = {
+    className: React.PropTypes.string,
+};
+Loading.defaultProps = {
+    className: '',
+};
 export default Loading;

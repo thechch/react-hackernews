@@ -20,8 +20,8 @@ Button.defaultProps = {
     children: '',
 };
 
-const withLoading = (Component) => ({ isLoading, ...rest }) =>
-    isLoading ? <Loading { ...rest } /> : <Component { ...rest } />;
+const withLoading = Component => ({ isLoading, ...rest }) =>
+    isLoading ? <Loading {...rest} /> : <Component {...rest} />;
 
 const ButtonWithLoading = withLoading(Button);
 

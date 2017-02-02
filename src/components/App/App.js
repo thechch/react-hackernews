@@ -15,7 +15,6 @@ const PARAM_PAGE = 'page=';
 const PARAM_HPP = 'hitsPerPage=';
 
 
-
 class App extends Component {
     constructor(props) {
         super(props);
@@ -27,6 +26,7 @@ class App extends Component {
             totalPages: null,
             isLoading: false,
             sortKey: 'NONE',
+            isSortReverse: false,
         };
 
         this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
@@ -35,19 +35,25 @@ class App extends Component {
         this.onDismiss = this.onDismiss.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
         this.onSearchSubmit = this.onSearchSubmit.bind(this);
+        this.onSort = this.onSort.bind(this);
     }
-    onSort(sortKey) {
-        this.setState({ sortKey });
-    }
+
     componentDidMount() {
         const { searchTerm } = this.state;
         this.fetchSearchTopStories(searchTerm, DEFAULT_PAGE);
     }
+
+    onSort(sortKey) {
+        const isSortReverse = this.state.sortKey === sortKey && !this.state.isSortReverse;
+        this.setState({ sortKey, isSortReverse });
+    }
+
     onSearchChange(event) {
         this.setState({
             searchTerm: event.target.value,
         });
     }
+
     onDismiss(id) {
         const { searchKey, results } = this.state;
         const { hits, page } = results[searchKey];
@@ -62,6 +68,7 @@ class App extends Component {
             },
         });
     }
+
     onSearchSubmit(event) {
         const { searchTerm } = this.state;
         this.setState({ searchKey: searchTerm });
@@ -70,13 +77,14 @@ class App extends Component {
         }
         event.preventDefault();
     }
+
     setSearchTopStories(result) {
         const { hits, page, nbPages } = result;
         const { searchKey, results } = this.state;
 
         const oldHits = results && results[searchKey]
-            ? results[searchKey].hits
-            : [];
+          ? results[searchKey].hits
+          : [];
 
         const updatedHits = [
             ...oldHits,
@@ -92,32 +100,36 @@ class App extends Component {
             isLoading: false,
         });
     }
+
     needsToSearchTopStories(searchTerm) {
         return !this.state.results[searchTerm];
     }
+
     fetchSearchTopStories(searchTerm, page) {
         this.setState({
             searchKey: searchTerm,
             isLoading: true,
         });
         fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
-            .then(response => response.json())
-            .then(result => this.setSearchTopStories(result));
+          .then(response => response.json())
+          .then(result => this.setSearchTopStories(result));
     }
+
     render() {
         const {
-            results,
-            searchTerm,
-            searchKey,
-            totalPages,
-            isLoading,
-            sortKey,
+          results,
+          searchTerm,
+          searchKey,
+          totalPages,
+          isLoading,
+          sortKey,
+          isSortReverse,
         } = this.state;
         const page = (results && results[searchKey] && results[searchKey].page) || 0;
         const list = (results && results[searchKey] && results[searchKey].hits) || [];
         const modifier = totalPages && page + 1 !== totalPages
-            ? 1
-            : 0;
+          ? 1
+          : 0;
         return (
           <div className="page">
             <div className="interactions">
@@ -126,23 +138,24 @@ class App extends Component {
                 onChange={this.onSearchChange}
                 onSubmit={this.onSearchSubmit}
               >
-                  Search
-              </Search>
+                      Search
+                  </Search>
             </div>
             <Table
               list={list}
               sortKey={sortKey}
+              isSortReverse={isSortReverse}
               onSort={this.onSort}
               onDismiss={this.onDismiss}
             />
             <div className="interactions">
-                <ButtonWithLoading
-                    isLoading={isLoading}
-                    className="green"
-                    onClick={() => this.fetchSearchTopStories(searchKey, page + modifier)}
-                >
-                    Give me more
-                </ButtonWithLoading>
+              <ButtonWithLoading
+                isLoading={isLoading}
+                className="green"
+                onClick={() => this.fetchSearchTopStories(searchKey, page + modifier)}
+              >
+                      Give me more
+                  </ButtonWithLoading>
             </div>
           </div>
         );
