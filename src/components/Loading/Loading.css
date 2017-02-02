@@ -4,6 +4,10 @@
     text-align: center;
 }
 
+.spinner.green > div {
+    background-color: rgb(50, 170, 0);
+}
+
 .spinner > div {
     width: 18px;
     height: 18px;

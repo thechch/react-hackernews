@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import Search from '../Search/Search';
 import Table from '../Table/Table';
-import Button from '../Button/Button';
-import Loading from '../Loading/Loading';
+import ButtonWithLoading from '../Button/Button';
 import './App.css';
 
 const DEFAULT_QUERY = 'redux';
@@ -128,17 +127,15 @@ class App extends Component {
               onDismiss={this.onDismiss}
             />
             <div className="interactions">
-              {
-                  isLoading
-                      ? <Loading />
-                      : <Button
-                        onClick={() => this.fetchSearchTopStories(searchKey, page + modifier)}
-                      >
-                          Give me more
-                      </Button>
-                  }
+                <ButtonWithLoading
+                    isLoading={isLoading}
+                    className="green"
+                    onClick={() => this.fetchSearchTopStories(searchKey, page + modifier)}
+                >
+                    Give me more
+                </ButtonWithLoading>
             </div>
-          </div>пше
+          </div>
         );
     }
 }
@@ -146,7 +143,7 @@ class App extends Component {
 export default App;
 
 export {
-    Button,
+    ButtonWithLoading,
     Search,
     Table,
 };
