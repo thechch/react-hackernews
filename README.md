@@ -10,6 +10,8 @@ Just another one simple React application.
 * Server-side search
 * Search results caching
 * Dismissing
+* Modular CSS
+* Unit tests
 
 ###ToDo:
 * Cards
@@ -17,6 +19,7 @@ Just another one simple React application.
 * Effects
 * Add redux (?)
 * Bookmarks
+* Write more tests
 
 # Available Scripts (React-create-app)
 
