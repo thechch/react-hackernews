@@ -12,7 +12,6 @@ const Search = ({ value, onChange, onSubmit, children }) =>
     </button>
   </form>;
 
-export default Search;
 Search.propTypes = {
     value: React.PropTypes.string,
     onChange: React.PropTypes.func.isRequired,
@@ -23,3 +22,5 @@ Search.defaultProps = {
     value: '',
     children: 'Search',
 };
+
+export default Search;

@@ -14,6 +14,8 @@ const PARAM_SEARCH = 'query=';
 const PARAM_PAGE = 'page=';
 const PARAM_HPP = 'hitsPerPage=';
 
+
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +26,7 @@ class App extends Component {
             searchTerm: DEFAULT_QUERY,
             totalPages: null,
             isLoading: false,
+            sortKey: 'NONE',
         };
 
         this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
@@ -32,6 +35,9 @@ class App extends Component {
         this.onDismiss = this.onDismiss.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
         this.onSearchSubmit = this.onSearchSubmit.bind(this);
+    }
+    onSort(sortKey) {
+        this.setState({ sortKey });
     }
     componentDidMount() {
         const { searchTerm } = this.state;
@@ -105,6 +111,7 @@ class App extends Component {
             searchKey,
             totalPages,
             isLoading,
+            sortKey,
         } = this.state;
         const page = (results && results[searchKey] && results[searchKey].page) || 0;
         const list = (results && results[searchKey] && results[searchKey].hits) || [];
@@ -124,6 +131,8 @@ class App extends Component {
             </div>
             <Table
               list={list}
+              sortKey={sortKey}
+              onSort={this.onSort}
               onDismiss={this.onDismiss}
             />
             <div className="interactions">
