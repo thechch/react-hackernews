@@ -10,18 +10,20 @@ const Button = ({ onClick, className, children }) =>
   >
     { children }
   </button>;
+
 Button.propTypes = {
     onClick: React.PropTypes.func.isRequired,
     className: React.PropTypes.string,
     children: React.PropTypes.string,
 };
+
 Button.defaultProps = {
     className: '',
     children: '',
 };
 
 const withLoading = Component => ({ isLoading, ...rest }) =>
-    isLoading ? <Loading {...rest} /> : <Component {...rest} />;
+  isLoading ? <Loading {...rest} /> : <Component {...rest} />;
 
 const ButtonWithLoading = withLoading(Button);
 

@@ -14,7 +14,6 @@ const PARAM_SEARCH = 'query=';
 const PARAM_PAGE = 'page=';
 const PARAM_HPP = 'hitsPerPage=';
 
-
 class App extends Component {
     constructor(props) {
         super(props);
@@ -25,8 +24,6 @@ class App extends Component {
             searchTerm: DEFAULT_QUERY,
             totalPages: null,
             isLoading: false,
-            sortKey: 'NONE',
-            isSortReverse: false,
         };
 
         this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
@@ -35,17 +32,11 @@ class App extends Component {
         this.onDismiss = this.onDismiss.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
         this.onSearchSubmit = this.onSearchSubmit.bind(this);
-        this.onSort = this.onSort.bind(this);
     }
 
     componentDidMount() {
         const { searchTerm } = this.state;
         this.fetchSearchTopStories(searchTerm, DEFAULT_PAGE);
-    }
-
-    onSort(sortKey) {
-        const isSortReverse = this.state.sortKey === sortKey && !this.state.isSortReverse;
-        this.setState({ sortKey, isSortReverse });
     }
 
     onSearchChange(event) {
@@ -72,6 +63,7 @@ class App extends Component {
     onSearchSubmit(event) {
         const { searchTerm } = this.state;
         this.setState({ searchKey: searchTerm });
+
         if (this.needsToSearchTopStories(searchTerm)) {
             this.fetchSearchTopStories(searchTerm, DEFAULT_PAGE);
         }
@@ -110,6 +102,7 @@ class App extends Component {
             searchKey: searchTerm,
             isLoading: true,
         });
+
         fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
           .then(response => response.json())
           .then(result => this.setSearchTopStories(result));
@@ -122,14 +115,14 @@ class App extends Component {
           searchKey,
           totalPages,
           isLoading,
-          sortKey,
-          isSortReverse,
         } = this.state;
+
         const page = (results && results[searchKey] && results[searchKey].page) || 0;
         const list = (results && results[searchKey] && results[searchKey].hits) || [];
         const modifier = totalPages && page + 1 !== totalPages
           ? 1
           : 0;
+
         return (
           <div className="page">
             <div className="interactions">
@@ -143,9 +136,6 @@ class App extends Component {
             </div>
             <Table
               list={list}
-              sortKey={sortKey}
-              isSortReverse={isSortReverse}
-              onSort={this.onSort}
               onDismiss={this.onDismiss}
             />
             <div className="interactions">

@@ -18,6 +18,7 @@ Search.propTypes = {
     onSubmit: React.PropTypes.func.isRequired,
     children: React.PropTypes.string,
 };
+
 Search.defaultProps = {
     value: '',
     children: 'Search',

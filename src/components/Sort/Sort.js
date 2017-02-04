@@ -16,12 +16,14 @@ const Sort = ({ sortKey, onSort, activeSortKey, children }) => {
         {children}
       </Button>);
 };
+
 Sort.propTypes = {
     sortKey: React.PropTypes.string.isRequired,
     onSort: React.PropTypes.func.isRequired,
     activeSortKey: React.PropTypes.string,
     children: React.PropTypes.string,
 };
+
 Sort.defaultProps = {
     activeSortKey: 'NONE',
     children: '',
