@@ -2,13 +2,15 @@
 
 Just another one simple React application.
 
+##[Demo](http://138.197.211.173/)
+
 ###Features:
 * Uses Hacker News API
 * Pagination
 * Loading
 * Sorting
 * Server-side search
-* Search results caching
+* Search resulgitts caching
 * Dismissing
 * Modular CSS
 * Unit tests
