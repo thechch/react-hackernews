@@ -2,7 +2,7 @@
 
 Just another one simple React application.
 
-##[Demo](http://138.197.211.173/react-hackernews/)
+##[Demo](http://thechch.tk/react-hackernews/)
 
 ###Features:
 * Uses Hacker News API
