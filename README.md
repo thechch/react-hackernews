@@ -2,7 +2,7 @@
 
 Just another one simple React application.
 
-## [Demo](http://www.hackernews.thech.me)
+## [Demo](http://hackernews.thech.me)
 
 ### Features:
 * Uses Hacker News API
