@@ -2,9 +2,9 @@
 
 Just another one simple React application.
 
-##[Demo](http://thechch.tk/react-hackernews/)
+## [Demo](http://www.hackernews.thech.me)
 
-###Features:
+### Features:
 * Uses Hacker News API
 * Pagination
 * Loading
@@ -15,7 +15,7 @@ Just another one simple React application.
 * Modular CSS
 * Unit tests
 
-###ToDo:
+### ToDo:
 * Cards
 * Grid
 * Effects
