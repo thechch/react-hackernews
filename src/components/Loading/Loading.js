@@ -4,7 +4,7 @@ import React from 'react';
 
 import './Loading.css';
 
-const Loading = ({ className }) => (
+export const Loading = ({ className = '' }) => (
   <div className={classnames('spinner', className)}>
     <div className="bounce1" />
     <div className="bounce2" />
@@ -15,9 +15,3 @@ const Loading = ({ className }) => (
 Loading.propTypes = {
   className: PropTypes.string,
 };
-
-Loading.defaultProps = {
-  className: '',
-};
-
-export default Loading;

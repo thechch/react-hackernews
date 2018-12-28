@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 
 import { Button } from '../Button';
 import { Sort } from '../Sort';
-
 import './Table.css';
 
 const SORTS = {
@@ -25,7 +24,7 @@ const smallColumn = {
   width: '10%',
 };
 
-function Table({ list, onDismiss }) {
+export function Table({ list, onDismiss }) {
   const [{ sortKey, isSortReverse }, setState] = useState({
     sortKey: 'NONE',
     isSortReverse: false,
@@ -94,5 +93,3 @@ Table.propTypes = {
   list: PropTypes.array.isRequired,
   onDismiss: PropTypes.func.isRequired,
 };
-
-export default Table;

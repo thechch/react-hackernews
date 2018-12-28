@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
 import { Search } from '../Search';
 import { Table } from '../Table';
-import ButtonWithLoading from '../Button/Button';
+import { ButtonWithLoading } from '../Button';
 import './App.css';
 
 const DEFAULT_QUERY = 'redux';

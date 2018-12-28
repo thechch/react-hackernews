@@ -1,7 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-const Search = ({ initialValue = '', onSubmit, children = 'Search' }) => {
+export const Search = ({
+  initialValue = '',
+  onSubmit,
+  children = 'Search',
+}) => {
   const [value, onChange] = useState(initialValue);
 
   const onFormSubmit = (event) => {
@@ -27,5 +31,3 @@ Search.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   children: PropTypes.string,
 };
-
-export default Search;

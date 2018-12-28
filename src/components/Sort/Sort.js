@@ -4,7 +4,12 @@ import React from 'react';
 
 import { Button } from '../Button';
 
-const Sort = ({ sortKey, onSort, activeSortKey, children }) => {
+export const Sort = ({
+  sortKey,
+  onSort,
+  activeSortKey = 'NONE',
+  children = '',
+}) => {
   const sortClass = classnames('button-inline', {
     'button-active': sortKey === activeSortKey,
   });
@@ -22,10 +27,3 @@ Sort.propTypes = {
   activeSortKey: PropTypes.string,
   children: PropTypes.string,
 };
-
-Sort.defaultProps = {
-  activeSortKey: 'NONE',
-  children: '',
-};
-
-export default Sort;

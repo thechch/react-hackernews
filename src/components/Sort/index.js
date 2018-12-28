@@ -1,3 +1,1 @@
-import Sort from './Sort';
-
-export { Sort };
+export { Sort } from './Sort';
